@@ -75,19 +75,40 @@ import gradio as gr
 import tensorflow as tf
 import numpy as np
 from PIL import Image
+import os
 
-model = tf.keras.models.load_model("model/tomato_leaf_cnn.keras")
+MODEL_PATH = "model/tomato_leaf_cnn.keras"
+
+model = tf.keras.models.load_model(MODEL_PATH)
+
+CLASS_NAMES = [
+    "Bacterial Spot",
+    "Early Blight",
+    "Late Blight",
+    "Leaf Mold",
+    "Septoria Leaf Spot",
+    "Spider Mites",
+    "Target Spot",
+    "Tomato Yellow Leaf Curl Virus",
+    "Tomato Mosaic Virus",
+    "Healthy"
+]
 
 def predict(img):
-    img = img.resize((224,224))
-    img = np.array(img)/255.0
-    img = img.reshape(1,224,224,3)
-    pred = model.predict(img)
-    return str(np.argmax(pred))
+    img = img.resize((224, 224))
+    img = np.array(img) / 255.0
+    img = img.reshape(1, 224, 224, 3)
+
+    preds = model.predict(img)
+    idx = np.argmax(preds)
+    confidence = float(np.max(preds))
+
+    return f"{CLASS_NAMES[idx]} (confidence: {confidence:.2f})"
 
 gr.Interface(
     fn=predict,
     inputs=gr.Image(type="pil"),
     outputs="text",
-    title="Tomato Leaf Disease Detection"
+    title="🍅 Tomato Leaf Disease Detection",
+    description="Upload a tomato leaf image to detect disease"
 ).launch()
