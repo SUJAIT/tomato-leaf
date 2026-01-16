@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tomato Leaf Disease Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #185a9d;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .upload-box {
+            border: 2px dashed #43cea2;
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 25px;
+        }
+
+
+
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-box:hover {
+            background: #f0fffa;
+        }
+
+        button {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+               margin-top: 5px;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .result {
+            margin-top: 20px;
+        }
+
+        .result h2 {
+            color: #185a9d;
+        }
+
+        .confidence {
+            font-size: 18px;
+            color: #43cea2;
+            font-weight: 600;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🍅 Tomato Leaf Disease</h1>
+    <p>Upload a tomato leaf image to detect disease</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        <label class="upload-box">
+            📷 Click to choose image
+            <input type="file" name="image" required>
+        </label>
+
+        <button type="submit">🔍 Predict</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        <h2>🧪 Prediction</h2>
+        <p><strong>{{ result }}</strong></p>
+        <p class="confidence">Confidence: {{ confidence }}%</p>
+
+        {% if image_path %}
+            <img src="{{ image_path }}" alt="Uploaded Image">
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
